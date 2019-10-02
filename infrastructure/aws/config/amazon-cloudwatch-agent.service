@@ -1,0 +1,13 @@
+[Unit]
+Description=Amazon CloudWatch Agent
+After=network.target
+
+[Service]
+
+ExecStart=/opt/aws/amazon-cloudwatch-agent/bin/start-amazon-cloudwatch-agent -config /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json 
+ExecStop=sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -m ec2 -a stop
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+

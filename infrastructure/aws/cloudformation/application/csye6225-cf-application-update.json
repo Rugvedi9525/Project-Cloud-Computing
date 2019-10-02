@@ -1,0 +1,91 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+  "Parameters": {
+    "subnetExportName1": {
+      "Type": "String"
+    },
+    "subnetExportName2": {
+      "Type": "String"
+    },
+    "keyTag": {
+      "Type": "String"
+    }
+  },
+  "Resources" : {
+    "myDynamoDBTable" : {
+      "Type" : "AWS::DynamoDB::Table",
+      "Properties" : {
+        "AttributeDefinitions" : [
+          {
+            "AttributeName" : "id",
+            "AttributeType" : "S"   
+          }
+        ],
+        "KeySchema" : [
+          {
+            "AttributeName" : "id",
+            "KeyType" : "HASH"
+          }
+        ],
+        "ProvisionedThroughput" : {
+          "ReadCapacityUnits" : "5",
+          "WriteCapacityUnits" : "5"
+        },
+        "TableName" : "csye6225"
+      }
+      
+    },
+    "ec2Instance" : {
+      "Type" : "AWS::EC2::Instance",
+       "Properties" : {
+         "ImageId" : "ami-66506c1c",
+         "KeyName" : { "Ref" : "keyTag" },
+         "InstanceType" : "t2.micro",
+         "DisableApiTermination" : "false",
+          "BlockDeviceMappings": [
+            {
+              "DeviceName" : "/dev/sda1",
+              "Ebs" : {
+                "VolumeType": "gp2",
+                "VolumeSize": "16"
+              }
+            }
+          ],
+          "SecurityGroupIds" : [{"Fn::ImportValue" : "csye6225-devesh-Networking-web-security-group"}],
+          "SubnetId" : {"Fn::ImportValue" : "csye6225-devesh-Networking-web-subnet"}
+     }
+    },
+    "myDBSubnetGroup" : {
+      "Type" : "AWS::RDS::DBSubnetGroup",
+      "Properties" : {
+         "DBSubnetGroupDescription" : "Subnet description of db subnets",
+         "SubnetIds" : [ {"Fn::ImportValue" : "csye6225-devesh-Networking-db-subnet1Id"},
+          {"Fn::ImportValue" : "csye6225-devesh-Networking-db-subnet2Id"} ],
+         "Tags" : [ {"Key" : "Name", "Value" : "dbSubnetGroup"} ]
+      }
+   },
+    "myRDSInstance" : {
+      "Type" : "AWS::RDS::DBInstance",
+      "Properties" : {
+         "DBName" : "csye6225",
+         "AllocatedStorage" : "20",
+         "Engine" : "MySQL",
+        "EngineVersion" : "5.6.37",
+        "DBInstanceClass" : "db.t2.medium",
+        "MultiAZ" : false,
+        "DBInstanceIdentifier" : "csye6225-spring2018",
+        "MasterUsername" : "csye6225master",
+        "MasterUserPassword" : "csye6225password",
+        "DBSubnetGroupName" : {"Ref" : "myDBSubnetGroup"},
+        "PubliclyAccessible" : false,
+        "VPCSecurityGroups" : [{"Fn::ImportValue" : "csye6225-devesh-Networking-db-security-group"}]
+      }
+   },
+   "s3Bucket" : {
+      "Type" : "AWS::S3::Bucket",
+      "Properties" : {
+        "BucketName" : "s3.csye6225-spring2018-kandpald.me"
+      }
+   } 
+  }
+}

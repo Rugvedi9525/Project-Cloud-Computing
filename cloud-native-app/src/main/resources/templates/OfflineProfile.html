@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html
+        lang="en" xmlns:th="http://www.thymeleaf.org"
+        layout:decorator="layouts/main">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Offline Profile</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+</head>
+
+
+<body>
+
+<div layout:fragment="content">
+
+
+    <div th:object="${userAccount}">
+
+
+        <textarea name="aboutMe" id="aboutMe" cols="30" rows="10" th:text="*{aboutMe}">About Me</textarea>
+
+
+    </div>
+
+</div>
+
+
+<!--<img id="profilePic" src="/profilePic" alt="Profile Pic" height="50" width="50"/>-->
+
+
+</body>
+
+
+</html>
+

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+
+
+
+    <title>Create Account</title>
+
+
+    <style>
+
+        .error {
+
+            color: red;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<h1>Create Account</h1>
+
+
+<form id="form_create" th:action="@{/createAccount}" th:object="${user}" method="post">
+
+    <p class="error" th:if="${UserExists}">
+        UserName Already Exists
+
+    </p>
+
+
+    <p>
+        <label>First Name</label>
+        <input type="text" th:field="*{firstName}" required="required"/>
+
+    </p>
+
+    <p>
+        <label>Last Name</label>
+        <input type="text" th:field="*{lastName}" required="required"/>
+
+    </p>
+
+    <p>
+        <label>Email Address</label>
+        <input type="email" th:field="*{emailAddress}" required="required"/>
+
+    </p>
+    <p>
+        <label>Password</label>
+        <input type="password" id="password" th:field="*{password}" required="required"/>
+
+    </p>
+    <p>
+        <label>Confirm Password</label>
+        <input type="password" id="confirm-password" required="required"/>
+
+    </p>
+
+    <input type="button" onclick="validatePassword()" value="Submit"/>
+
+</form>
+
+
+<script type="text/javascript">
+    function validatePassword() {
+
+        var pwd = document.getElementById("password").value;
+        var confirmpwd = document.getElementById("confirm-password").value;
+
+        if (pwd === confirmpwd) {
+
+            document.getElementById("form_create").submit();
+
+
+        } else {
+
+            alert("Password and Confirm Password are not same");
+            return;
+
+
+        }
+
+
+    }
+
+
+</script>
+
+
+</body>
+</html>
+
+

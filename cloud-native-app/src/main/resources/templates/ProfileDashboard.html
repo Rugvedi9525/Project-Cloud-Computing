@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html
+        lang="en" xmlns:th="http://www.thymeleaf.org"
+        layout:decorator="layouts/main">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Profile Dashboard</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+</head>
+
+
+<body>
+
+<div layout:fragment="content">
+
+
+    <div th:object="${profileInfo}">
+
+        <p>
+            <label>First Name</label>
+        <p th:text="*{firstName}">First Name</p>
+
+
+        </p>
+
+        <p>
+            <label>Last Name</label>
+        <p th:text="*{lastName}">Last Name</p>
+
+
+        </p>
+
+        <p>
+            <label>Email Id</label>
+        <p th:text="*{emailAddress}">Email Id</p>
+
+        </p>
+        <!--<p>-->
+        <label>Current Date</label>
+        <!--<p  th:text="*{timestamp}">Current Date</p>-->
+
+        <p id="date-current"></p>
+
+
+        <script>
+            document.getElementById("date-current").innerHTML = Date();
+        </script>
+
+        <!--</p>-->
+
+
+    </div>
+
+
+    <form id="form_update_aboutme" th:action="@{/updateAboutMe}" th:object="${profileInfo}" method="post">
+
+
+        <textarea name="aboutMe" id="aboutMe" cols="30" rows="10" th:text="*{aboutMe}">About Me</textarea>
+
+        <input type="submit" value="Save"/>
+
+
+
+    </form>
+
+
+
+    <div>
+        <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
+            <p>
+                <input type="file" name="profile-pic" id="profile-pic" accept=".jpg, .jpeg, .png" required="true"/>
+            </p>
+            <p>
+                <input type="submit" value="Upload Image"/>
+            </p>
+
+        </form>
+
+    </div>
+
+
+    <img id="profilePic" src="profilePic" alt="Profile Pic" height="50" width="50"/>
+
+
+    <form th:action="@{'/deletePic'}" th:method="delete">
+        <button type="submit" id="submitButton">Delete Photo</button>
+    </form>
+
+
+</div>
+
+
+</body>
+
+
+</html>
+
+

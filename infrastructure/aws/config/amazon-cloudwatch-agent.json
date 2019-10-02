@@ -1,0 +1,22 @@
+{
+	"logs": {
+		"logs_collected": {
+			"files": {
+				"collect_list": [
+					{
+						"file_path": "/var/log/tomcat8/csye6225-aws.log",
+						"log_group_name": "application-logs"
+					},
+					{
+						"file_path": "/var/log/tomcat8/cat*",
+						"log_group_name": "catalina-logs"
+					},
+					{
+						"file_path": "/var/log/tomcat8/*",
+						"log_group_name": "combined-logs"
+					}
+				]
+			}
+		}
+	}
+}
